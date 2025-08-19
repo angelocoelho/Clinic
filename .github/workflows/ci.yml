@@ -1,61 +1,60 @@
-name: CI - RSpec + RuboCop
+name: CI
 
-# Dispara em toda PR direcionada para a branch main
 on:
   pull_request:
     branches: [ main ]
 
 jobs:
-  test:
-    # Onde o job vai rodar (Ubuntu é rápido e bem compatível)
+  lint:
+    name: Lint (RuboCop)
     runs-on: ubuntu-latest
-
-    # Serviço de banco de dados (aqui um PostgreSQL básico)
-    services:
-      postgres:
-        image: postgres:14
-        ports: ["5432:5432"]
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: postgres
-        options: >-
-          --health-cmd="pg_isready -U postgres"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=5
-
-    # Variáveis de ambiente — pode puxar do seu database.yml
-    env:
-      RAILS_ENV: test
-      DATABASE_URL: postgres://postgres:postgres@localhost:5432/clinic_test
-
     steps:
-      # 1️⃣ Baixa o código da PR
-      - name: Checkout do repositório
+      - name: Checkout
         uses: actions/checkout@v4
 
-      # 2️⃣ Configura Ruby + cache do Bundler (economiza tempo)
-      - name: Configura Ruby
+      - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.3'
           bundler-cache: true
 
-      # 3️⃣ Instala as gems
-      - name: Instalar dependências
-        run: bundle install --jobs 4 --retry 3
+      - name: Run RuboCop
+        run: bundle exec rubocop -f github --parallel
 
-      # 4️⃣ Prepara o banco de teste
-      - name: Preparar banco
-        run: |
-          bin/rails db:create
-          bin/rails db:migrate
+  test:
+    name: Tests (RSpec)
+    runs-on: ubuntu-latest
 
-      # 5️⃣ Lint — verifica estilo com RuboCop
-      - name: Rodar RuboCop
-        run: bundle exec rubocop
+    services:
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: clinic_test
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd="pg_isready -U postgres -d clinic_test"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
 
-      # 6️⃣ Testes — roda a suíte do RSpec
-      - name: Rodar RSpec
-        run: bundle exec rspec
+    env:
+      RAILS_ENV: test
+      DATABASE_URL: postgres://postgres:postgres@localhost:5432/clinic_test
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+          bundler-cache: true
+
+      - name: Prepare DB
+        run: bin/rails db:prepare
+
+      - name: Run RSpec
+        run: bundle exec rspec --format documentation
