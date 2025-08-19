@@ -25,5 +25,23 @@ module Clinic
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    config.generators do |g|
+      g.helper false
+      g.assets false
+      g.jbuilder false
+      g.stylesheets false
+      g.javascripts false
+    
+      g.test_framework :rspec,
+        request_specs: true,
+        model_specs:   true,
+        routing_specs: false,
+        view_specs:    false,
+        helper_specs:  false,
+        controller_specs: false
+    end
   end
 end
+
+
