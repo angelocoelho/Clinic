@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class Professional < ApplicationRecord
-  has_many :appointments, dependent: :nullify
   has_many :professional_specialties, dependent: :delete_all
   has_many :specialties, through: :professional_specialties
 
