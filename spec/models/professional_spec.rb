@@ -1,23 +1,34 @@
 # frozen_string_literal: true
 
-require "rails_helper"
+require 'rails_helper'
 
 RSpec.describe Professional, type: :model do
-  it "is valid with name and unique email" do
-    expect(described_class.new(name: "Dra. Ana", email: "ana@example.com")).to be_valid
+  subject(:professional) { described_class.new(name:, email:) }
+
+  let(:name) { 'Dra. Ana' }
+  let(:email) { 'ana@example.com' }
+
+  it 'is valid with name and unique email' do
+    expect(professional).to be_valid
   end
 
-  it "requires name and email" do
-    p = described_class.new
-    expect(p).not_to be_valid
-    expect(p.errors[:name]).to be_present
-    expect(p.errors[:email]).to be_present
+  context 'when missing name and email' do
+    let(:name) { nil }
+    let(:email) { nil }
+    it 'is not valid and sets errors' do
+      expect(professional).not_to be_valid
+      professional.validate
+      expect(professional.errors[:name]).to be_present
+      expect(professional.errors[:email]).to be_present
+    end
   end
 
-  it "validates uniqueness of email" do
-    described_class.create!(name: "Dr. churros", email: "churros@example.com")
-    dup = described_class.new(name: "Dr. churros", email: "churros@example.com")
-    expect(dup).not_to be_valid
-    expect(dup.errors[:email]).to be_present
+  context 'when email already taken' do
+    before { described_class.create!(name: 'Dr. churros', email:) }
+    it 'is not valid (uniqueness)' do
+      expect(professional).not_to be_valid
+      professional.validate
+      expect(professional.errors[:email]).to be_present
+    end
   end
 end

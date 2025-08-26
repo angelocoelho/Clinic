@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ActiveAdmin.register Professional do
   permit_params :name, :registration_code, :email, :phone,
                 :workday_start, :workday_end, specialty_ids: []
@@ -16,12 +18,12 @@ ActiveAdmin.register Professional do
     column :registration_code
     column :workday_start
     column :workday_end
-    column("Specialties") { |professional| professional.specialties.map(&:name).join(", ") }
+    column('Specialties') { |professional| professional.specialties.map(&:name).join(', ') }
     actions
   end
 
   form do |f|
-    f.inputs "Dados" do
+    f.inputs 'Dados' do
       f.input :name
       f.input :email
       f.input :registration_code
