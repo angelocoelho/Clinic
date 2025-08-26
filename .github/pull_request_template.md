@@ -8,7 +8,7 @@ Dicas:
 -->
 
 ## Contexto
-Resumo do problema/objetivo (o porquê desta mudança).  
+<!-- Resumo do problema/objetivo (o porquê desta mudança). -->
 Ex.: “Precisamos cadastrar especialidades para vincular profissionais e serviços.”
 
 ## O que foi feito
