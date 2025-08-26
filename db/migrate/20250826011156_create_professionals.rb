@@ -2,8 +2,8 @@
 
 class CreateProfessionals < ActiveRecord::Migration[7.1]
   def change
-    create_table :professional do |t|
-      t.string :name,  null: false
+    create_table :professionals do |t|
+      t.string :name, null: false
       t.string :registration_code
       t.string :email, null: false
       t.string :phone
@@ -13,6 +13,6 @@ class CreateProfessionals < ActiveRecord::Migration[7.1]
       t.timestamps
     end
 
-    add_index :professional, :email, unique: true
+    add_index :professionals, :email, unique: true
   end
 end
