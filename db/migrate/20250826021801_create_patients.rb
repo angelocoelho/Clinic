@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreatePatients < ActiveRecord::Migration[7.1]
   def change
     create_table :patients do |t|
@@ -10,7 +12,7 @@ class CreatePatients < ActiveRecord::Migration[7.1]
 
       t.timestamps
     end
-  end
 
-  add_index :patients, :email, unique: true
+    add_index :patients, :email, unique: true
+  end
 end

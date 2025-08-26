@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ActiveAdmin.register Patient do
   permit_params :name, :email, :phone, :birthdate, :notes
 
@@ -18,7 +20,7 @@ ActiveAdmin.register Patient do
   end
 
   form do |f|
-    f.inputs "Dados do Paciente" do
+    f.inputs 'Dados do Paciente' do
       f.input :name
       f.input :email
       f.input :phone
