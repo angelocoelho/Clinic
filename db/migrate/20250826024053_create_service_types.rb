@@ -9,7 +9,7 @@ class CreateServiceTypes < ActiveRecord::Migration[7.1]
       t.references :specialty, null: false, foreign_key: true
       t.timestamps
 
-      add_index :service_types, [:specialty_id, :name], unique: true
+      t.index [:specialty_id, :name], unique: true
     end
   end
 end
