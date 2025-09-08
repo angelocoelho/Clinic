@@ -5,56 +5,47 @@ on:
     branches: [ main ]
 
 jobs:
-  lint:
-    name: Lint (RuboCop)
+  rubocop:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.3'
           bundler-cache: true
+      - run: bundle exec rubocop
 
-      - name: Run RuboCop
-        run: bundle exec rubocop -f github --parallel
-
-  test:
-    name: Tests (RSpec)
+  rspec:
     runs-on: ubuntu-latest
-
     services:
       postgres:
         image: postgres:14
+        ports: ["5432:5432"]
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: clinic_test
-        ports: ["5432:5432"]
+          POSTGRES_DB: postgres
         options: >-
-          --health-cmd="pg_isready -U postgres -d clinic_test"
+          --health-cmd="pg_isready -U postgres"
           --health-interval=10s
           --health-timeout=5s
           --health-retries=5
-
     env:
       RAILS_ENV: test
       DATABASE_URL: postgres://postgres:postgres@localhost:5432/clinic_test
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.3'
           bundler-cache: true
+      - name: Install deps
+        run: bundle install --jobs 4 --retry 3
 
-      - name: Prepare DB
-        run: bin/rails db:prepare
+      - name: Prepare DB (schema only)
+        run: |
+          bin/rails db:drop db:create
+          bin/rails db:schema:load
 
-      - name: Run RSpec
-        run: bundle exec rspec --format documentation
+      - name: RSpec
+        run: bundle exec rspec
