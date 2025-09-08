@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -10,98 +12,98 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_08_27_010704) do
+ActiveRecord::Schema[7.1].define(version: 20_250_827_010_704) do
   # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
+  enable_extension 'plpgsql'
 
-  create_table "active_admin_comments", force: :cascade do |t|
-    t.string "namespace"
-    t.text "body"
-    t.string "resource_type"
-    t.bigint "resource_id"
-    t.string "author_type"
-    t.bigint "author_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["author_type", "author_id"], name: "index_active_admin_comments_on_author"
-    t.index ["namespace"], name: "index_active_admin_comments_on_namespace"
-    t.index ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource"
+  create_table 'active_admin_comments', force: :cascade do |t|
+    t.string 'namespace'
+    t.text 'body'
+    t.string 'resource_type'
+    t.bigint 'resource_id'
+    t.string 'author_type'
+    t.bigint 'author_id'
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
+    t.index %w[author_type author_id], name: 'index_active_admin_comments_on_author'
+    t.index ['namespace'], name: 'index_active_admin_comments_on_namespace'
+    t.index %w[resource_type resource_id], name: 'index_active_admin_comments_on_resource'
   end
 
-  create_table "admin_users", force: :cascade do |t|
-    t.string "email", default: "", null: false
-    t.string "encrypted_password", default: "", null: false
-    t.string "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["email"], name: "index_admin_users_on_email", unique: true
-    t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
+  create_table 'admin_users', force: :cascade do |t|
+    t.string 'email', default: '', null: false
+    t.string 'encrypted_password', default: '', null: false
+    t.string 'reset_password_token'
+    t.datetime 'reset_password_sent_at'
+    t.datetime 'remember_created_at'
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
+    t.index ['email'], name: 'index_admin_users_on_email', unique: true
+    t.index ['reset_password_token'], name: 'index_admin_users_on_reset_password_token', unique: true
   end
 
-  create_table "patients", force: :cascade do |t|
-    t.string "name"
-    t.string "email"
-    t.string "phone"
-    t.date "birthdate"
-    t.text "notes"
-    t.integer "appointments_count"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["email"], name: "index_patients_on_email", unique: true
+  create_table 'patients', force: :cascade do |t|
+    t.string 'name'
+    t.string 'email'
+    t.string 'phone'
+    t.date 'birthdate'
+    t.text 'notes'
+    t.integer 'appointments_count'
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
+    t.index ['email'], name: 'index_patients_on_email', unique: true
   end
 
-  create_table "professional_specialties", force: :cascade do |t|
-    t.bigint "professional_id", null: false
-    t.bigint "specialty_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["professional_id", "specialty_id"], name: "idx_professional_specialty_unique", unique: true
-    t.index ["professional_id"], name: "index_professional_specialties_on_professional_id"
-    t.index ["specialty_id"], name: "index_professional_specialties_on_specialty_id"
+  create_table 'professional_specialties', force: :cascade do |t|
+    t.bigint 'professional_id', null: false
+    t.bigint 'specialty_id', null: false
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
+    t.index %w[professional_id specialty_id], name: 'idx_professional_specialty_unique', unique: true
+    t.index ['professional_id'], name: 'index_professional_specialties_on_professional_id'
+    t.index ['specialty_id'], name: 'index_professional_specialties_on_specialty_id'
   end
 
-  create_table "professionals", force: :cascade do |t|
-    t.string "name", null: false
-    t.string "registration_code"
-    t.string "email", null: false
-    t.string "phone"
-    t.time "workday_start"
-    t.time "workday_end"
-    t.integer "appointments_count", default: 0, null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["email"], name: "index_professionals_on_email", unique: true
+  create_table 'professionals', force: :cascade do |t|
+    t.string 'name', null: false
+    t.string 'registration_code'
+    t.string 'email', null: false
+    t.string 'phone'
+    t.time 'workday_start'
+    t.time 'workday_end'
+    t.integer 'appointments_count', default: 0, null: false
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
+    t.index ['email'], name: 'index_professionals_on_email', unique: true
   end
 
-  create_table "rooms", force: :cascade do |t|
-    t.string "name", null: false
-    t.string "location"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["name"], name: "index_rooms_on_name", unique: true
+  create_table 'rooms', force: :cascade do |t|
+    t.string 'name', null: false
+    t.string 'location'
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
+    t.index ['name'], name: 'index_rooms_on_name', unique: true
   end
 
-  create_table "service_types", force: :cascade do |t|
-    t.string "name", null: false
-    t.integer "duration_minutes", null: false
-    t.integer "price_cents", null: false
-    t.bigint "specialty_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["specialty_id", "name"], name: "index_service_types_on_specialty_id_and_name", unique: true
-    t.index ["specialty_id"], name: "index_service_types_on_specialty_id"
+  create_table 'service_types', force: :cascade do |t|
+    t.string 'name', null: false
+    t.integer 'duration_minutes', null: false
+    t.integer 'price_cents', null: false
+    t.bigint 'specialty_id', null: false
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
+    t.index %w[specialty_id name], name: 'index_service_types_on_specialty_id_and_name', unique: true
+    t.index ['specialty_id'], name: 'index_service_types_on_specialty_id'
   end
 
-  create_table "specialties", force: :cascade do |t|
-    t.string "name", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["name"], name: "index_specialties_on_name", unique: true
+  create_table 'specialties', force: :cascade do |t|
+    t.string 'name', null: false
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
+    t.index ['name'], name: 'index_specialties_on_name', unique: true
   end
 
-  add_foreign_key "professional_specialties", "professionals"
-  add_foreign_key "professional_specialties", "specialties"
-  add_foreign_key "service_types", "specialties"
+  add_foreign_key 'professional_specialties', 'professionals'
+  add_foreign_key 'professional_specialties', 'specialties'
+  add_foreign_key 'service_types', 'specialties'
 end

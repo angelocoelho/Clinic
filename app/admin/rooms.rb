@@ -1,4 +1,4 @@
-#frozen_string_literal: true
+# frozen_string_literal: true
 
 ActiveAdmin.register Room do
   permit_params :name, :location
@@ -16,7 +16,7 @@ ActiveAdmin.register Room do
   end
 
   form do |f|
-    f.inputs "Sala" do
+    f.inputs 'Sala' do
       f.input :name
       f.input :location
     end
