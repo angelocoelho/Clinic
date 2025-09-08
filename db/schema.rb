@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 20_250_826_012_058) do
+ActiveRecord::Schema[7.1].define(version: 20_250_827_010_704) do
   # These are extensions that must be enabled in order to support this database
   enable_extension 'plpgsql'
 
@@ -40,16 +40,6 @@ ActiveRecord::Schema[7.1].define(version: 20_250_826_012_058) do
     t.datetime 'updated_at', null: false
     t.index ['email'], name: 'index_admin_users_on_email', unique: true
     t.index ['reset_password_token'], name: 'index_admin_users_on_reset_password_token', unique: true
-  end
-
-  create_table 'professional_specialties', force: :cascade do |t|
-    t.bigint 'professional_id', null: false
-    t.bigint 'specialty_id', null: false
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
-    t.index %w[professional_id specialty_id], name: 'idx_professional_specialty_unique', unique: true
-    t.index ['professional_id'], name: 'index_professional_specialties_on_professional_id'
-    t.index ['specialty_id'], name: 'index_professional_specialties_on_specialty_id'
   end
 
   create_table 'patients', force: :cascade do |t|
@@ -87,6 +77,25 @@ ActiveRecord::Schema[7.1].define(version: 20_250_826_012_058) do
     t.index ['email'], name: 'index_professionals_on_email', unique: true
   end
 
+  create_table 'rooms', force: :cascade do |t|
+    t.string 'name', null: false
+    t.string 'location'
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
+    t.index ['name'], name: 'index_rooms_on_name', unique: true
+  end
+
+  create_table 'service_types', force: :cascade do |t|
+    t.string 'name', null: false
+    t.integer 'duration_minutes', null: false
+    t.integer 'price_cents', null: false
+    t.bigint 'specialty_id', null: false
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
+    t.index %w[specialty_id name], name: 'index_service_types_on_specialty_id_and_name', unique: true
+    t.index ['specialty_id'], name: 'index_service_types_on_specialty_id'
+  end
+
   create_table 'specialties', force: :cascade do |t|
     t.string 'name', null: false
     t.datetime 'created_at', null: false
@@ -96,4 +105,5 @@ ActiveRecord::Schema[7.1].define(version: 20_250_826_012_058) do
 
   add_foreign_key 'professional_specialties', 'professionals'
   add_foreign_key 'professional_specialties', 'specialties'
+  add_foreign_key 'service_types', 'specialties'
 end
